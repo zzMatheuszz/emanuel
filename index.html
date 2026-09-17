@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desvendando o Teste de Perfil da Azul | Emanoel Lourenço</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; color: #334155; }
+        
+        /* Aplicando a fonte premium para todos os títulos */
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
+        
+        .text-azul-escuro { color: #0b1120; } /* Tom de azul marinho mais profundo e premium */
+        .bg-azul-escuro { background-color: #0b1120; }
+        .text-azul-destaque { color: #2563eb; }
+        .bg-azul-claro { background-color: #f8fafc; }
+        
+        /* Premium tweaks */
+        .shadow-premium { box-shadow: 0 30px 60px -15px rgba(11, 17, 32, 0.12); }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .bg-gradient-premium { background: linear-gradient(135deg, #0b1120 0%, #172554 100%); }
+
+        /* Ocultar scrollbar mas manter funcionalidade */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+            display: flex;
+            width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+        /* Pausa a animação quando o usuário passa o mouse para ler */
+        .animate-scroll:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- HERO SECTION (Fundo Imersivo de Aviação) -->
+    <section class="relative pt-32 pb-28 md:pt-48 md:pb-40 overflow-hidden flex items-center min-h-[85vh] justify-center">
+        <!-- Imagem de Fundo em Tela Cheia -->
+        <div class="absolute inset-0 z-0">
+            <!-- Usando uma imagem premium de visão interna/nuvens para contextualizar a aviação -->
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Aviação - Vista Aérea" class="w-full h-full object-cover object-center" />
+            <!-- Overlay escuro centralizado para garantir a leitura perfeita do texto -->
+            <div class="absolute inset-0 bg-[#0b1120]/75 backdrop-blur-[2px]"></div>
+            <!-- Gradiente na base para conectar com a próxima seção de dores -->
+            <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto px-4 relative z-10 w-full text-center flex flex-col items-center">
+            
+            <!-- Headline com tipografia Ultra Premium -->
+            <h1 class="text-5xl md:text-6xl lg:text-[5rem] font-extrabold text-white leading-[1.05] mb-6 tracking-tighter font-heading mx-auto drop-shadow-lg">
+                Fique <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Pronto Antes</span> <br class="hidden md:block"> da Seleção.
+            </h1>
+            
+            <p class="text-lg md:text-xl text-blue-100/90 mb-10 font-light leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+                Pare de cair na armadilha da "resposta certa". Descubra o que realmente está sendo avaliado no <strong class="font-semibold text-white">Teste de Perfil</strong> que reprova a maioria dos candidatos.
+            </p>
+            
+            <div class="flex flex-col items-center justify-center gap-5 w-full">
+                <a href="https://pay.kiwify.com.br/2sflxSF" target="_blank" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-medium text-lg py-4 px-12 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.6)] text-center flex items-center justify-center">
+                    Quero Me Preparar Agora
+                </a>
+                
+                <!-- Selo de garantia encapsulado e centralizado -->
+                <div class="flex items-center justify-center gap-2.5 text-sm text-blue-200 font-medium bg-white/5 py-2 px-5 rounded-full backdrop-blur-sm border border-white/10 mt-2">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>Garantia total de <span class="text-white font-bold">7 dias</span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOR / IDENTIFICAÇÃO (Design Limpo e Focado em Tipografia) -->
+    <section class="py-20 md:py-32 bg-gray-50 border-b border-gray-100">
+        <div class="max-w-5xl mx-auto px-4">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-azul-escuro mb-6 leading-tight font-heading tracking-tight">
+                    Você pode estar fazendo a <br class="hidden md:block"><span class="text-azul-destaque italic font-light">pergunta errada...</span>
+                </h2>
+                <p class="text-gray-500 text-lg md:text-xl font-light">
+                    Se você já se pegou pensando em alguma dessas frases, você está correndo um grande risco de reprovação antes mesmo da entrevista:
+                </p>
+            </div>
+            
+            <!-- Grid de Dores - Design Editorial sem ícones genéricos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+                <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 group-hover:bg-blue-400 transition-colors duration-300"></div>
+                    <span class="text-gray-100 font-heading font-extrabold text-6xl absolute top-4 right-6 pointer-events-none transition-all duration-300 group-hover:text-blue-50">01</span>
+                    <p class="text-gray-800 text-xl font-medium leading-relaxed mb-3 relative z-10">"O que será que a Azul quer que eu responda?"</p>
+                    <p class="text-base text-gray-500 font-light relative z-10">O erro de tentar adivinhar o perfil ideal ao invés de mapear o seu.</p>
+                </div>
+                
+                <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 group-hover:bg-blue-400 transition-colors duration-300"></div>
+                    <span class="text-gray-100 font-heading font-extrabold text-6xl absolute top-4 right-6 pointer-events-none transition-all duration-300 group-hover:text-blue-50">02</span>
+                    <p class="text-gray-800 text-xl font-medium leading-relaxed mb-3 relative z-10">Buscar atalhos na internet.</p>
+                    <p class="text-base text-gray-500 font-light relative z-10">Ficar procurando dicas do tipo: "se aparecer isso no teste, marque aquilo".</p>
+                </div>
+
+                <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 group-hover:bg-blue-400 transition-colors duration-300"></div>
+                    <span class="text-gray-100 font-heading font-extrabold text-6xl absolute top-4 right-6 pointer-events-none transition-all duration-300 group-hover:text-blue-50">03</span>
+                    <p class="text-gray-800 text-xl font-medium leading-relaxed mb-3 relative z-10">A armadilha da Matemática.</p>
+                    <p class="text-base text-gray-500 font-light relative z-10">Estudar para uma avaliação comportamental como se fosse uma prova com gabarito exato.</p>
+                </div>
+
+                <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 group-hover:bg-blue-400 transition-colors duration-300"></div>
+                    <span class="text-gray-100 font-heading font-extrabold text-6xl absolute top-4 right-6 pointer-events-none transition-all duration-300 group-hover:text-blue-50">04</span>
+                    <p class="text-gray-800 text-xl font-medium leading-relaxed mb-3 relative z-10">Duvidar das próprias respostas.</p>
+                    <p class="text-base text-gray-500 font-light relative z-10">Mudar opções no meio do teste tentando manter coerência, perdendo a naturalidade.</p>
+                </div>
+            </div>
+
+            <!-- Bloco de Impacto -->
+            <div class="bg-azul-escuro rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+                <!-- Textura sutil no fundo -->
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517400508447-f8dd518b86db?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-5 mix-blend-overlay"></div>
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <p class="relative z-10 text-xl md:text-2xl font-light text-white leading-relaxed max-w-3xl mx-auto">
+                    "Comportamento não funciona como uma prova de gabarito. Quem procura a resposta certa, se prepara para a pergunta. <strong class="font-semibold text-blue-400">Quem entende comportamento, se prepara para o que está sendo avaliado.</strong>"
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SOLUÇÃO - DESIGN PREMIUM E COPY CORRIGIDO -->
+    <section class="py-20 md:py-28 relative overflow-hidden bg-white">
+        <!-- Elementos de fundo premium -->
+        <div class="absolute inset-0 bg-gradient-to-br from-white via-[#f0f7ff] to-white pointer-events-none"></div>
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-200/50 to-transparent"></div>
+        <div class="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-200/20 rounded-full blur-[120px] pointer-events-none translate-x-1/3"></div>
+        <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 flex flex-col lg:flex-row items-stretch gap-12 lg:gap-16 relative z-10">
+            <!-- Coluna de Texto (60% do espaço, na esquerda para melhor leitura) -->
+            <div class="w-full lg:w-3/5 relative z-10 py-4">
+                <span class="text-azul-destaque font-bold tracking-widest text-xs uppercase mb-4 block">A Mudança de Jogo</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-azul-escuro mb-6 leading-tight font-heading">
+                    Não procure o gabarito. <br>
+                    <span class="text-azul-destaque italic">Desenvolva sua consistência.</span>
+                </h2>
+                <p class="text-gray-600 mb-6 text-lg leading-relaxed font-light">
+                    No <strong>Movimento Azul</strong>, o objetivo não é ensinar você a parecer um candidato melhor, decorar um perfil ou fingir ser quem não é. É ajudar você a se tornar um profissional <strong>mais preparado para a aviação.</strong>
+                </p>
+                <p class="text-slate-800 mb-8 text-[17px] font-medium border-l-2 border-slate-300 pl-4">
+                    Em vez de focar no ciclo <span class="line-through text-gray-400 font-light mx-1">PERGUNTA → RESPOSTA CERTA</span>, nós construímos uma base sólida:
+                </p>
+                
+                <!-- Lista minimalista premium -->
+                <div class="space-y-8">
+                    <div class="flex items-start gap-5">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 font-bold text-sm font-heading border border-blue-100">01</div>
+                        <div class="mt-1.5">
+                            <h4 class="text-slate-900 font-semibold mb-1.5 tracking-tight text-lg">Avaliação e Autoconhecimento</h4>
+                            <p class="text-gray-500 font-light text-base leading-relaxed">Entender como você toma decisões, lida com pressão e reage a mudanças bruscas.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-5">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 font-bold text-sm font-heading border border-blue-100">02</div>
+                        <div class="mt-1.5">
+                            <h4 class="text-slate-900 font-semibold mb-1.5 tracking-tight text-lg">Desenvolvimento Contínuo</h4>
+                            <p class="text-gray-500 font-light text-base leading-relaxed">Identificar os "gaps" (lacunas) entre o seu padrão atual e as competências exigidas pela companhia.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-5">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shrink-0 text-white font-bold text-sm shadow-md font-heading">03</div>
+                        <div class="mt-1.5">
+                            <h4 class="text-blue-600 font-bold mb-1.5 tracking-tight text-lg">Consistência Comportamental</h4>
+                            <p class="text-gray-600 font-light text-base leading-relaxed">Chegar na seleção sabendo quem você é, o que está sendo avaliado e com total segurança em suas respostas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coluna da Imagem (40% do espaço, esticada verticalmente para alinhar) -->
+            <div class="w-full lg:w-2/5 relative flex mt-8 lg:mt-0">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-slate-200 to-transparent rounded-[2.5rem] transform rotate-2 opacity-60"></div>
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Profissional se preparando com consistência" class="relative rounded-2xl shadow-premium w-full object-cover min-h-[400px] lg:min-h-full border border-white">
+            </div>
+        </div>
+    </section>
+
+    <!-- PROVA SOCIAL -->
+    <section class="py-16 md:py-24 bg-azul-escuro text-white text-center overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Isso não fica apenas na teoria</h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">Veja o que dizem os alunos que pararam de adivinhar respostas e passaram a entender o seu próprio perfil com segurança e verdade.</p>
+        </div>
+            
+        <div class="relative w-full flex items-center group py-4">
+            <!-- Efeito Glassmorphism de Fade nas laterais (Super Premium) -->
+            <div class="absolute left-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-r from-[#0b1120] to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-l from-[#0b1120] to-transparent z-10 pointer-events-none"></div>
+
+            <!-- Track do Carrossel -->
+            <div class="animate-scroll gap-6 px-4">
+                <!-- NOTA: Para o loop infinito funcionar perfeitamente sem "pular", os itens precisam ser duplicados (Bloco 1 + Bloco 2) -->
+                
+                <!-- === BLOCO 1 === -->
+                <!-- Print 1 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento1.png" alt="Depoimento 1" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 2 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento2.png" alt="Depoimento 2" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 3 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento3.png" alt="Depoimento 3" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 4 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento4.png" alt="Depoimento 4" class="w-full h-full object-contain">
+                </div>
+
+                <!-- === BLOCO 2 (Cópia exata para o scroll infinito) === -->
+                <!-- Print 1 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento1.png" alt="Depoimento 1" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 2 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento2.png" alt="Depoimento 2" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 3 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento3.png" alt="Depoimento 3" class="w-full h-full object-contain">
+                </div>
+                <!-- Print 4 -->
+                <div class="w-[320px] h-[550px] p-2 shrink-0 rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:z-20 hover:shadow-[0_0_40px_rgba(37,99,235,0.3)] bg-slate-800 flex items-center justify-center hover:border-blue-500/50 hover:bg-slate-800/80">
+                    <img src="imagens/depoimento4.png" alt="Depoimento 4" class="w-full h-full object-contain">
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 mt-8">
+            <p class="text-gray-400 text-[15px] font-medium tracking-wide">Junte-se a mais de <span class="text-blue-400 font-bold">500 alunos</span> que já passaram pela preparação voltada à Azul com Emanoel Lourenço.</p>
+        </div>
+    </section>
+
+    <!-- PILARES DO MÉTODO -->
+    <section class="py-20 md:py-32 bg-white relative border-t border-gray-100">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-20">
+                <span class="text-azul-destaque font-bold tracking-widest text-sm uppercase mb-3 block">A Metodologia</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-azul-escuro mb-6 tracking-tight">O Método da Consistência Comportamental</h2>
+                <p class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-light">Três etapas para você chegar sabendo melhor quem você é, o que está sendo avaliado e o que precisa desenvolver.</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 md:gap-12">
+                <!-- Pilar 1 -->
+                <div class="bg-gray-50/50 rounded-3xl p-8 md:p-12 border border-gray-100 transition duration-300 hover:shadow-premium hover:bg-white group">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="bg-azul-escuro text-white font-bold py-2 px-4 rounded-lg shadow-sm text-xs tracking-widest uppercase shrink-0 mt-1.5">Passo 1</div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-5 font-heading">Decodificar</h3>
+                            <ul class="space-y-4">
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Entender o que existe por trás da avaliação.</li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Compreender os conceitos de Fit cultural, Comportamento, Personalidade e Competências.</li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Parar de enxergar apenas perguntas soltas e começar a ver os padrões.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 2 -->
+                <div class="bg-gray-50/50 rounded-3xl p-8 md:p-12 border border-gray-100 transition duration-300 hover:shadow-premium hover:bg-white group">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="bg-azul-escuro text-white font-bold py-2 px-4 rounded-lg shadow-sm text-xs tracking-widest uppercase shrink-0 mt-1.5">Passo 2</div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-5 font-heading">Mapear</h3>
+                            <ul class="space-y-4">
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Olhar para quem responde: <strong>Você</strong>.</li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Como você toma decisões? Como reage sob pressão? Como trabalha em equipe?</li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Descobrir claramente seus pontos fortes e seus pontos de atenção (gaps).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 3 -->
+                <div class="bg-gray-50/50 rounded-3xl p-8 md:p-12 border border-gray-100 transition duration-300 hover:shadow-premium hover:bg-white group">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="bg-azul-escuro text-white font-bold py-2 px-4 rounded-lg shadow-sm text-xs tracking-widest uppercase shrink-0 mt-1.5">Passo 3</div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-5 font-heading">Alinhar</h3>
+                            <ul class="space-y-4">
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Alinhar não significa fingir, decorar um perfil ou manipular testes.</li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed"><strong>Alinhar significa desenvolver.</strong></li>
+                                <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full text-gray-600 text-lg leading-relaxed">Trabalhar os gaps entre seu padrão atual e as competências exigidas antes mesmo da seleção abrir.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFERTA -->
+    <section id="oferta" class="py-24 md:py-32 bg-azul-escuro bg-gradient-premium relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517400508447-f8dd518b86db?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-fixed bg-center opacity-5 mix-blend-overlay"></div>
+        
+        <!-- Linha e brilho decorativos de alto padrão -->
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            
+            <div class="text-center mb-20">
+                <span class="text-blue-400 font-semibold tracking-widest text-sm uppercase mb-3 block">Sua Preparação Completa</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">O que você recebe ao entrar</h2>
+                <p class="text-lg text-blue-100/70 max-w-2xl mx-auto font-light leading-relaxed">Uma jornada baseada em compreensão, autoconhecimento e desenvolvimento contínuo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <!-- Entregáveis (Lado Esquerdo - Sofisticado) -->
+                <div class="lg:col-span-7 space-y-8 pr-0 lg:pr-8">
+                    
+                    <div class="flex items-start group">
+                        <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-6 shrink-0 border border-white/10 transition-colors group-hover:bg-blue-600/20">
+                            <i class="fa-solid fa-map-location-dot text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-semibold text-white text-xl mb-2">Mapeamento de Perfil em 3 Perspectivas</h4>
+                            <p class="text-blue-100/60 leading-relaxed font-light text-[15px]">O ponto de partida para ampliar sua compreensão sobre tendências, forças e pontos de atenção.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start group">
+                        <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-6 shrink-0 border border-white/10 transition-colors group-hover:bg-blue-600/20">
+                            <i class="fa-solid fa-unlock-keyhole text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-semibold text-white text-xl mb-2">Método Desvendando o Teste de Perfil</h4>
+                            <p class="text-blue-100/60 leading-relaxed font-light text-[15px]">Acesso a aulas gravadas focadas em: Fit Cultural, Comportamental, Personalidade e Situacional.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start group">
+                        <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-6 shrink-0 border border-white/10 transition-colors group-hover:bg-blue-600/20">
+                            <i class="fa-solid fa-book-open text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-semibold text-white text-xl mb-2">Caderno de Preparação e Exercícios</h4>
+                            <p class="text-blue-100/60 leading-relaxed font-light text-[15px]">Material complementar para transformar conteúdo em reflexão e aplicação na sua realidade.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start group">
+                        <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-6 shrink-0 border border-white/10 transition-colors group-hover:bg-blue-600/20">
+                            <i class="fa-solid fa-users text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-semibold text-white text-xl mb-2">Sala de Embarque Azul</h4>
+                            <p class="text-blue-100/60 leading-relaxed font-light text-[15px]">Grupo exclusivo de alunos para estudar, compartilhar, manter a motivação e tirar dúvidas.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Bônus Premium - Destaque Elegante -->
+                    <div class="mt-10 p-8 rounded-[2rem] bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 relative overflow-hidden backdrop-blur-sm">
+                        <div class="absolute top-0 right-0 bg-amber-500/20 text-amber-300 text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl tracking-widest uppercase border-b border-l border-amber-500/20">Exclusivo Turma 01</div>
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center mr-6 shrink-0 border border-amber-500/30">
+                                <i class="fa-solid fa-video text-amber-400 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-semibold text-white text-xl mb-2">Bônus Especial: 3 Aulas Ao Vivo</h4>
+                                <p class="text-amber-100/70 leading-relaxed font-light text-[15px]">Encontros diretamente comigo para aprofundar conteúdos e tirar suas dúvidas de perfil e preparação.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preço (Lado Direito - Cartão Clean e Autoritário) -->
+                <div class="lg:col-span-5 mt-12 lg:mt-0">
+                    <div class="bg-white rounded-[2.5rem] p-10 md:p-12 shadow-premium relative z-20 border border-gray-100 text-center">
+                        <div class="inline-block bg-slate-100 text-slate-600 text-xs font-bold tracking-widest uppercase py-2 px-5 rounded-full mb-10">
+                            12 Meses de Acesso
+                        </div>
+                        
+                        <div class="mb-2">
+                            <span class="text-gray-400 line-through text-lg font-light">De R$ 597,00</span>
+                        </div>
+                        <p class="text-gray-500 text-sm font-medium uppercase tracking-widest mb-4">Por apenas:</p>
+                        
+                        <div class="flex items-start justify-center text-slate-900 mb-2 font-heading">
+                            <span class="text-2xl font-semibold mt-3 mr-2">12x</span>
+                            <span class="text-3xl font-semibold mt-2 mr-1">R$</span>
+                            <span class="text-[5.5rem] leading-none font-extrabold tracking-tighter text-azul-escuro">29</span>
+                            <span class="text-3xl font-semibold mt-2">,70</span>
+                        </div>
+                        
+                        <p class="text-gray-500 text-[15px] font-light mb-12">Ou R$ 297,00 à vista</p>
+
+                        <a href="https://pay.kiwify.com.br/2sflxSF" target="_blank" class="block w-full bg-[#0b1120] hover:bg-blue-600 text-white font-medium text-lg py-5 px-8 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.4)]">
+                            Quero Me Preparar Agora
+                        </a>
+                        
+                        <div class="mt-6 flex items-center justify-center gap-2 text-[13px] text-gray-500">
+                            <i class="fa-solid fa-lock text-green-500"></i>
+                            <span class="font-light tracking-wide">Pagamento 100% Seguro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTORIDADE -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/3">
+                <img src="imagens/emanuel.png" alt="Emanoel Lourenço" class="rounded-full shadow-2xl border-4 border-azul-claro w-64 h-64 md:w-full md:h-auto object-cover mx-auto">
+            </div>
+            <div class="w-full md:w-2/3">
+                <h2 class="text-3xl font-bold text-azul-escuro mb-4">Quem será seu mentor?</h2>
+                <h3 class="text-xl text-azul-destaque font-semibold mb-6">Emanoel Lourenço</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p>Há mais de 13 anos trabalho com análise de perfil comportamental. Minha história também está diretamente ligada à aviação: fui presidente do Aeroclube de Varginha (Sul de Minas) e atuei como instrutor de CGA e Sobrevivência.</p>
+                    <p>Em 2021, quando a Azul inseriu os Testes de Perfil no processo seletivo, notei que candidatos incríveis travavam. A partir daí, dediquei meu trabalho a preparar pessoas especificamente para essa etapa.</p>
+                    <p>Hoje, são <strong>mais de 500 alunos na Azul</strong> e <strong>mais de 800 alunos na LATAM</strong> que passaram pelos meus métodos. Atualmente, também concluo minha graduação em Psicologia para aprofundar ainda mais essa base.</p>
+                    <p class="font-bold italic">"Meu trabalho não é garantir uma vaga. Meu trabalho é PREPARAR. Eu não descubro fórmulas secretas, eu desenvolvo profissionais."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GARANTIA -->
+    <section class="py-16 bg-slate-100 border-t border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-8 text-center md:text-left">
+            <i class="fa-solid fa-shield-halved text-7xl text-azul-destaque drop-shadow-lg"></i>
+            <div>
+                <h2 class="text-3xl font-bold text-azul-escuro mb-3">Garantia Incondicional de 7 Dias</h2>
+                <p class="text-gray-700 text-lg">Entre, assista às aulas disponíveis, veja os materiais e entenda a metodologia. Se dentro de 7 dias você perceber que o treinamento não é para você, basta solicitar o cancelamento e devolvemos 100% do seu investimento. Sem perguntas. Sem risco.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-azul-escuro text-center mb-10">Perguntas Frequentes</h2>
+            
+            <div class="space-y-4">
+                <!-- Pergunta 1 -->
+                <details class="group border border-gray-200 rounded-lg bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-5 text-gray-900 font-medium">
+                        <h2 class="font-semibold text-lg">Mas a seleção da Azul nem abriu...</h2>
+                        <span class="relative size-5 shrink-0">
+                            <i class="fa-solid fa-plus absolute inset-0 opacity-100 group-open:opacity-0 transition"></i>
+                            <i class="fa-solid fa-minus absolute inset-0 opacity-0 group-open:opacity-100 transition"></i>
+                        </span>
+                    </summary>
+                    <p class="px-5 pb-5 leading-relaxed text-gray-700">
+                        Justamente por isso! Qual é o melhor momento para descobrir algo que precisa desenvolver: quando você tem semanas/meses, ou quando recebe um link de teste e tem poucos dias? Desenvolvimento comportamental exige tempo. Hoje você possui a maior vantagem: ficar pronto antes da corrida começar.
+                    </p>
+                </details>
+
+                <!-- Pergunta 2 -->
+                <details class="group border border-gray-200 rounded-lg bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-5 text-gray-900 font-medium">
+                        <h2 class="font-semibold text-lg">Não é só eu "ser eu mesmo"?</h2>
+                        <span class="relative size-5 shrink-0">
+                            <i class="fa-solid fa-plus absolute inset-0 opacity-100 group-open:opacity-0 transition"></i>
+                            <i class="fa-solid fa-minus absolute inset-0 opacity-0 group-open:opacity-100 transition"></i>
+                        </span>
+                    </summary>
+                    <p class="px-5 pb-5 leading-relaxed text-gray-700">
+                        Você deve ser verdadeiro. Mas existe uma diferença enorme entre ser você mesmo e acreditar que não existe nada em você que possa ser desenvolvido. Autenticidade não significa abrir mão da evolução profissional. Você continua sendo você, mas com maior repertório comportamental.
+                    </p>
+                </details>
+
+                <!-- Pergunta 3 -->
+                <details class="group border border-gray-200 rounded-lg bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-5 text-gray-900 font-medium">
+                        <h2 class="font-semibold text-lg">Eu já fui reprovado. E se meu perfil não servir?</h2>
+                        <span class="relative size-5 shrink-0">
+                            <i class="fa-solid fa-plus absolute inset-0 opacity-100 group-open:opacity-0 transition"></i>
+                            <i class="fa-solid fa-minus absolute inset-0 opacity-0 group-open:opacity-100 transition"></i>
+                        </span>
+                    </summary>
+                    <p class="px-5 pb-5 leading-relaxed text-gray-700">
+                        Uma reprovação anterior, sozinha, não permite concluir isso. Tentar reconstruir mentalmente as respostas passadas só te leva de volta à "Armadilha da Resposta Certa". O curso vai te ajudar a parar de perguntar "Onde eu errei?" e começar a perguntar "O que eu posso desenvolver para chegar melhor na próxima oportunidade?".
+                    </p>
+                </details>
+
+                <!-- Pergunta 4 -->
+                <details class="group border border-gray-200 rounded-lg bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-5 text-gray-900 font-medium">
+                        <h2 class="font-semibold text-lg">Eu não entendo nada de DISC, Big Five ou Perfil.</h2>
+                        <span class="relative size-5 shrink-0">
+                            <i class="fa-solid fa-plus absolute inset-0 opacity-100 group-open:opacity-0 transition"></i>
+                            <i class="fa-solid fa-minus absolute inset-0 opacity-0 group-open:opacity-100 transition"></i>
+                        </span>
+                    </summary>
+                    <p class="px-5 pb-5 leading-relaxed text-gray-700">
+                        Você não precisa entender antes de entrar. É para isso que o treinamento serve! Começamos pelos conceitos básicos, olhamos para o seu perfil e, gradualmente, transformamos teoria em compreensão prática. O objetivo não é formar você como analista, mas te dar independência para não depender de dicas de internet.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-azul-escuro text-center py-8 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4">
+            <p class="text-gray-400 text-sm mb-4">
+                "A data da próxima seleção não está sob seu controle. Mas o que você faz até essa data está."
+            </p>
+            <p class="text-gray-500 text-xs">
+                &copy; 2026 Movimento Azul - Emanoel Lourenço. Todos os direitos reservados.
+                <br>Este site não possui vínculo oficial com a Azul Linhas Aéreas.
+            </p>
+        </div>
+    </footer>
+
+    <style>
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+    </style>
+</body>
+</html>
