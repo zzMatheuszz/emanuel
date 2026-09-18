@@ -82,7 +82,7 @@
             </p>
             
             <div class="flex flex-col items-center justify-center gap-5 w-full">
-                <a href="https://pay.kiwify.com.br/2sflxSF?src=organico-livedevenda-grupo&utm_source=organico&utm_content=livedevenda&utm_term=grupo" target="_blank" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-medium text-lg py-4 px-12 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.6)] text-center flex items-center justify-center">
+                <a href="https://pay.kiwify.com.br/2sflxSF" target="_blank" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-medium text-lg py-4 px-12 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.6)] text-center flex items-center justify-center">
                     Quero Me Preparar Agora
                 </a>
                 
@@ -530,6 +530,47 @@
                 <br>Este site não possui vínculo oficial com a Azul Linhas Aéreas.
             </p>
         </div>
+        <script>
+    let prefix = ["https://pay.kiwify.com.br"];
+
+    function getParams() {
+        let t = "",
+            e = window.top.location.href,
+            r = new URL(e);
+
+        if (r) {
+            let a = r.searchParams.get("utm_source"),
+                n = r.searchParams.get("utm_medium"),
+                o = r.searchParams.get("utm_campaign"),
+                m = r.searchParams.get("utm_term"),
+                c = r.searchParams.get("utm_content");
+
+            if (e.indexOf("?") !== -1) {
+                t = "&sck=" + a + "|" + n + "|" + o + "|" + m + "|" + c;
+            }
+        }
+
+        return t;
+    }
+
+    !function () {
+        var t = new URLSearchParams(window.location.search);
+
+        if (t.toString()) {
+            document.querySelectorAll("a").forEach(function (e) {
+                for (let r = 0; r < prefix.length; r++) {
+                    if (e.href.indexOf(prefix[r]) !== -1) {
+                        e.href += e.href.indexOf("?") === -1
+                            ? "?" + t.toString() + getParams()
+                            : "&" + t.toString() + getParams();
+                    }
+                }
+            });
+        }
+    }();
+</script>
+</body>
+</html>
     </footer>
 
     <style>
